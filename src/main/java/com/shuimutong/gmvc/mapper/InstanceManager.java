@@ -42,7 +42,7 @@ public class InstanceManager {
 	 */
 	public static void init(Map<String, String> conf) throws InstantiationException, IllegalAccessException {
 		String basePackageStr = conf.get(SystemConst.BASE_PACKAGE);
-		scanUri(basePackageStr);
+		scanAnnotationedResources(basePackageStr);
 		generateAnnotationedEntity();
 	}
 	
@@ -68,7 +68,7 @@ public class InstanceManager {
 	 * 扫描需要框架管理的类
 	 * @param basePackageStr
 	 */
-	private static void scanUri(String basePackageStr) {
+	private static void scanAnnotationedResources(String basePackageStr) {
 		if(StringUtils.isBlank(basePackageStr)) {
 			return;
 		}
