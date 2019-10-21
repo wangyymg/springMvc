@@ -4,7 +4,7 @@
 	<groupId>com.shuimutong</groupId>
 	<artifactId>gmvc</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>com.shuimutong.gmvc</name>
 	<url>http://maven.apache.org</url>
 	
@@ -12,7 +12,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<fastjson.version>1.2.60</fastjson.version>
-		<gutil.version>0.0.1-SNAPSHOT</gutil.version>
+		<gutil.version>0.0.2-SNAPSHOT</gutil.version>
 	</properties>
 	
 	<dependencies>

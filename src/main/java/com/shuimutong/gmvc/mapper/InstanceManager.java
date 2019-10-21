@@ -2,9 +2,12 @@ package com.shuimutong.gmvc.mapper;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,10 +18,13 @@ import com.shuimutong.gmvc.annotation.XAutowired;
 import com.shuimutong.gmvc.annotation.XComponent;
 import com.shuimutong.gmvc.annotation.XController;
 import com.shuimutong.gmvc.annotation.XRepository;
+import com.shuimutong.gmvc.annotation.XServerInit;
 import com.shuimutong.gmvc.annotation.XService;
 import com.shuimutong.gmvc.bean.EntityBean;
+import com.shuimutong.gmvc.bean.ServerInit;
 import com.shuimutong.gmvc.bean.SystemConst;
 import com.shuimutong.gmvc.util.ClazzUtil;
+import com.shuimutong.guti.bean.TwoTuple;
 
 /**
  * 实例管理
@@ -33,6 +39,8 @@ public class InstanceManager {
 	private static Map<String, EntityBean> CLASS_ENTITY_MAP = new HashMap();
 	/**被XController注解的类**/
 	private static Set<EntityBean> CONTROLLER_CLASS_ENTITY_MAP = new HashSet();
+	/**初始化类列表**/
+	private static List<TwoTuple<Integer, EntityBean>> SERVER_INIT_LIST = new ArrayList();
 	
 	/**
 	 * 初始化
@@ -40,10 +48,11 @@ public class InstanceManager {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public static void init(Map<String, String> conf) throws InstantiationException, IllegalAccessException {
+	public static void init(Map<String, String> conf) throws InstantiationException, IllegalAccessException, Exception {
 		String basePackageStr = conf.get(SystemConst.BASE_PACKAGE);
 		scanAnnotationedResources(basePackageStr);
 		generateAnnotationedEntity();
+		scanServerInit(basePackageStr);
 	}
 	
 	/**
@@ -86,6 +95,46 @@ public class InstanceManager {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * 扫描需要初始化
+	 * @param basePackageStr
+	 * @throws Exception 
+	 */
+	private static void scanServerInit(String basePackageStr) throws Exception {
+		if(StringUtils.isBlank(basePackageStr)) {
+			return;
+		}
+		String[] basePackages = basePackageStr.split(",");
+		Reflections reflections = new Reflections(basePackages);
+		Set<Class<?>> resourceClazzes = reflections
+				.getTypesAnnotatedWith((Class<? extends Annotation>) XServerInit.class);
+		for(Class<?> resourceClazz : resourceClazzes) {
+			XServerInit serverInit = resourceClazz.getAnnotation(XServerInit.class);
+			String className = ClazzUtil.getClazzName(resourceClazz);
+			int priority = serverInit.priority();
+			SERVER_INIT_LIST.add(new TwoTuple<Integer, EntityBean>(priority, new EntityBean(className, resourceClazz)));
+		}
+		SERVER_INIT_LIST.sort(new Comparator<TwoTuple<Integer, EntityBean>>() {
+
+			@Override
+			public int compare(TwoTuple<Integer, EntityBean> o1, TwoTuple<Integer, EntityBean> o2) {
+				return o1.a - o2.a;
+			}
+		});
+		for(TwoTuple<Integer, EntityBean> twoTuple : SERVER_INIT_LIST) {
+			EntityBean tmpEntityBean = twoTuple.b;
+			if(CLASS_ENTITY_MAP.containsKey(tmpEntityBean.getName())) {
+				tmpEntityBean = CLASS_ENTITY_MAP.get(tmpEntityBean.getName());
+			} else {
+				Object inst = tmpEntityBean.getClazz().newInstance();
+				tmpEntityBean.setO(inst);
+			}
+			ServerInit tmpServerInit = (ServerInit) tmpEntityBean.getO();
+			tmpServerInit.init();
+		}
+		
 	}
 	
 	/**
