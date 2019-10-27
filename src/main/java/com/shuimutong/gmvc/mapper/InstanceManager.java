@@ -51,8 +51,8 @@ public class InstanceManager {
 	public static void init(Map<String, String> conf) throws InstantiationException, IllegalAccessException, Exception {
 		String basePackageStr = conf.get(SystemConst.BASE_PACKAGE);
 		scanAnnotationedResources(basePackageStr);
-		generateAnnotationedEntity();
 		scanServerInit(basePackageStr);
+		generateAnnotationedEntity();
 	}
 	
 	/**
@@ -207,7 +207,7 @@ public class InstanceManager {
 					}
 				}
 				if(!find) {
-					throw new IllegalArgumentException("autowiredEntityNotFoundException");
+					throw new IllegalArgumentException("autowiredEntityNotFoundException," + field.getName());
 				}
 			}
 		}

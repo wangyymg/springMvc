@@ -62,15 +62,19 @@ public class XDispatcherServlet extends HttpServlet {
 	    String requestUri = request.getRequestURI().replace(request.getContextPath(), "");
 //	    System.out.println("requestUri:" + requestUri);
 	    Method resolveMethod = ServletMapper.getMethodByUri(requestUri);
-	    EntityBean entityBean = InstanceManager.getEntityByClazz(resolveMethod.getDeclaringClass());
-	    if(entityBean == null) {
-	    	throw new ServletException("uriNotFoundException");
+	    if(resolveMethod == null) {
+	    	log.warn("UriNotFound:" + requestUri);
+	    } else {
+	    	EntityBean entityBean = InstanceManager.getEntityByClazz(resolveMethod.getDeclaringClass());
+	    	if(entityBean == null) {
+	    		throw new ServletException("uriNotFoundException");
+	    	}
+	    	try {
+	    		resolveMethod.invoke(entityBean.getO(), request, response);
+	    	} catch (Exception e) {
+	    		log.error("execute" + resolveMethod.getName() + "Exception", e);
+	    		throw new ServletException(e);
+	    	}
 	    }
-	    try {
-	    	resolveMethod.invoke(entityBean.getO(), request, response);
-        } catch (Exception e) {
-        	log.error("execute" + resolveMethod.getName() + "Exception", e);
-        	throw new ServletException(e);
-        }
 	}
 }
