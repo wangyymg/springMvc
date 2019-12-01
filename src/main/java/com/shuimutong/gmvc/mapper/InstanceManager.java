@@ -132,7 +132,9 @@ public class InstanceManager {
 				tmpEntityBean.setO(inst);
 			}
 			ServerInit tmpServerInit = (ServerInit) tmpEntityBean.getO();
-			tmpServerInit.init();
+			if(tmpServerInit != null) {
+				tmpServerInit.init();
+			}
 		}
 		
 	}
