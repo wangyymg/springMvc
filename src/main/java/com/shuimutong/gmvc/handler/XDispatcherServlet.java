@@ -40,7 +40,7 @@ public class XDispatcherServlet extends HttpServlet {
         Map<String, String> confMap = new HashMap();
         confMap.put(SystemConst.BASE_PACKAGE, config.getInitParameter(SystemConst.BASE_PACKAGE));
         try {
-			InstanceManager.init(confMap);
+			InstanceManager.initAnnotationedResourcesAndDoInit(confMap);
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}

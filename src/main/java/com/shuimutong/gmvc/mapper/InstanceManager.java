@@ -35,7 +35,7 @@ import com.shuimutong.guti.bean.TwoTuple;
  * @Copyright: 2019 [水木桶]  All rights reserved.
  */
 public class InstanceManager {
-	/**被注解的类**/
+	/**被注解的类，Map<ClassName, Entity>**/
 	private static Map<String, EntityBean> CLASS_ENTITY_MAP = new HashMap();
 	/**被XController注解的类**/
 	private static Set<EntityBean> CONTROLLER_CLASS_ENTITY_MAP = new HashSet();
@@ -43,16 +43,16 @@ public class InstanceManager {
 	private static List<TwoTuple<Integer, EntityBean>> SERVER_INIT_LIST = new ArrayList();
 	
 	/**
-	 * 初始化
-	 * @param conf
+	 * 根据配置的扫描包初始化资源，并执行初始化
+	 * @param conf 扫描包，key={@link SystemConst#BASE_PACKAGE}，value以“,”连接
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public static void init(Map<String, String> conf) throws InstantiationException, IllegalAccessException, Exception {
+	public static void initAnnotationedResourcesAndDoInit(Map<String, String> conf) throws InstantiationException, IllegalAccessException, Exception {
 		String basePackageStr = conf.get(SystemConst.BASE_PACKAGE);
 		scanAnnotationedResources(basePackageStr);
-		scanServerInit(basePackageStr);
 		generateAnnotationedEntity();
+		scanServerInit(basePackageStr);
 	}
 	
 	/**
