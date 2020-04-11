@@ -5,7 +5,50 @@ mvc框架
 
 
 #### 主要功能
-依赖反转
+基于注解的支持IOC的MVC框架。
+##### 注解
+- XComponent
+- XController
+- XService
+- XRespository
+- XAutowired
+- XRequestMapping
+- XServerInit
+##### web.xml配置示例
+
+```
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <!--配置启动servlet-->
+  <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+  	<servlet-name>gmvc</servlet-name>
+  	<servlet-class>com.shuimutong.gmvc.handler.XDispatcherServlet</servlet-class>
+  	<init-param>
+            <!--扫描路径-->
+            <param-name>basePackage</param-name>
+            <param-value>com.shuimutong.gmq</param-value>
+        </init-param>
+        <!--启动优先级-->
+  	<load-on-startup>2</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+  	<servlet-name>gmvc</servlet-name>
+  	<url-pattern>/</url-pattern>
+  </servlet-mapping>
+</web-app>
+```
+##### 仅使用IOC功能
+
+```
+map.put(SystemConst.BASE_PACKAGE, "com.package.**");
+InstanceManager.initAnnotationedResourcesAndDoInit(Map<String, String> map);
+```
+
 
 
 #### 参与贡献
