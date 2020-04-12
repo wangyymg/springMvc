@@ -22,7 +22,7 @@ import com.shuimutong.gmvc.annotation.XServerInit;
 import com.shuimutong.gmvc.annotation.XService;
 import com.shuimutong.gmvc.bean.EntityBean;
 import com.shuimutong.gmvc.bean.ServerInit;
-import com.shuimutong.gmvc.bean.SystemConst;
+import com.shuimutong.gmvc.bean.GmvcSystemConst;
 import com.shuimutong.gmvc.util.ClazzUtil;
 import com.shuimutong.guti.bean.TwoTuple;
 
@@ -44,12 +44,12 @@ public class InstanceManager {
 	
 	/**
 	 * 根据配置的扫描包初始化资源，并执行初始化
-	 * @param conf 扫描包，key={@link SystemConst#BASE_PACKAGE}，value以“,”连接
+	 * @param conf 扫描包，key={@link GmvcSystemConst#BASE_PACKAGE}，value以“,”连接
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
 	public static void initAnnotationedResourcesAndDoInit(Map<String, String> conf) throws InstantiationException, IllegalAccessException, Exception {
-		String basePackageStr = conf.get(SystemConst.BASE_PACKAGE);
+		String basePackageStr = conf.get(GmvcSystemConst.BASE_PACKAGE);
 		scanAnnotationedResources(basePackageStr);
 		generateAnnotationedEntity();
 		scanServerInit(basePackageStr);

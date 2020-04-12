@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.shuimutong.gmvc.bean.EntityBean;
-import com.shuimutong.gmvc.bean.SystemConst;
+import com.shuimutong.gmvc.bean.GmvcSystemConst;
 import com.shuimutong.gmvc.mapper.InstanceManager;
 import com.shuimutong.gmvc.mapper.ServletMapper;
 
@@ -38,7 +38,7 @@ public class XDispatcherServlet extends HttpServlet {
         //根据参数名获取参数值
 //        String basePackage = config.getInitParameter(SystemConst.BASE_PACKAGE);
         Map<String, String> confMap = new HashMap();
-        confMap.put(SystemConst.BASE_PACKAGE, config.getInitParameter(SystemConst.BASE_PACKAGE));
+        confMap.put(GmvcSystemConst.BASE_PACKAGE, config.getInitParameter(GmvcSystemConst.BASE_PACKAGE));
         try {
 			InstanceManager.initAnnotationedResourcesAndDoInit(confMap);
 		} catch (Exception e) {
