@@ -65,7 +65,7 @@ public class XDispatcherServlet extends HttpServlet {
 	    if(resolveMethod == null) {
 	    	log.warn("UriNotFound:" + requestUri);
 	    } else {
-	    	EntityBean entityBean = InstanceManager.getEntityByClazz(resolveMethod.getDeclaringClass());
+	    	EntityBean entityBean = InstanceManager.getEntityBeanByClazz(resolveMethod.getDeclaringClass());
 	    	if(entityBean == null) {
 	    		throw new ServletException("uriNotFoundException");
 	    	}

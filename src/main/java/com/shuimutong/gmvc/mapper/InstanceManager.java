@@ -68,9 +68,19 @@ public class InstanceManager {
 	 * @param clazz
 	 * @return
 	 */
-	public static EntityBean getEntityByClazz(Class clazz) {
+	public static EntityBean getEntityBeanByClazz(Class clazz) {
 		String className = ClazzUtil.getClazzName(clazz);
 		return CLASS_ENTITY_MAP.get(className);
+	}
+	
+	/**
+	 * 根据类获取对象实例
+	 * @param clazz
+	 * @return
+	 */
+	public static Object getEntityByClazz(Class clazz) {
+		EntityBean entityBean = getEntityBeanByClazz(clazz);
+		return entityBean == null ? null : entityBean.getO();
 	}
 	
 	/**
@@ -194,7 +204,7 @@ public class InstanceManager {
 				continue;
 			}
 			Class<?> fieldClazz = field.getType();
-			EntityBean relayEntity = getEntityByClazz(fieldClazz);
+			EntityBean relayEntity = getEntityBeanByClazz(fieldClazz);
 			//依赖的对象能够直接查到
 			if(relayEntity != null) {
 				field.set(entityInstance, relayEntity.getO());
