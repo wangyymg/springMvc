@@ -130,11 +130,11 @@ public class InstanceManager {
 
 			@Override
 			public int compare(TwoTuple<Integer, EntityBean> o1, TwoTuple<Integer, EntityBean> o2) {
-				return o1.a - o2.a;
+				return o1.getA() - o2.getA();
 			}
 		});
 		for(TwoTuple<Integer, EntityBean> twoTuple : SERVER_INIT_LIST) {
-			EntityBean tmpEntityBean = twoTuple.b;
+			EntityBean tmpEntityBean = twoTuple.getB();
 			if(CLASS_ENTITY_MAP.containsKey(tmpEntityBean.getName())) {
 				tmpEntityBean = CLASS_ENTITY_MAP.get(tmpEntityBean.getName());
 			} else {
@@ -166,7 +166,7 @@ public class InstanceManager {
 	
 	/**
 	 * 初始化实例对象
-	 * @param classEntityMap
+	 * @param entityBeans
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 */

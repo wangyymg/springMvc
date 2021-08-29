@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+
 /**
  * 请求处理类
  * @ClassName:  RequestResolveUtil   
@@ -56,5 +59,20 @@ public class RequestResolveUtil {
         body = body.replaceAll("<", "&lt;").replaceAll(">", "&gt;")
                 .replaceAll("\"", "&quot;").replaceAll("'", "&quot;");
         return body;
+    }
+
+    public static String getParameter(HttpServletRequest req, String parameterName) {
+        return req.getParameter(parameterName);
+    }
+
+    public static String readBodyStr(HttpServletRequest req) throws IOException {
+	    StringBuilder sb = new StringBuilder();
+	    try(BufferedReader br = req.getReader()) {
+	        String line;
+	        while ((line = br.readLine()) != null) {
+	            sb.append(line);
+            }
+        }
+	    return sb.toString();
     }
 }

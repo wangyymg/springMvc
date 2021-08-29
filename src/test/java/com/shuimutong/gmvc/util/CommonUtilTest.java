@@ -43,7 +43,7 @@ public class CommonUtilTest {
 		list.sort(new Comparator<TwoTuple<Integer, String>>() {
 			@Override
 			public int compare(TwoTuple<Integer, String> o1, TwoTuple<Integer, String> o2) {
-				return o1.a - o2.a;
+				return o1.getA() - o2.getA();
 			}
 		});
 		System.out.println("排序后：" + JSONObject.toJSONString(list));
